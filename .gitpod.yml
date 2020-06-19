@@ -1,4 +1,5 @@
-image: rust:latest
+image:
+  file: .gitpod.Dockerfile
 
 tasks:
   - prebuild: cargo install cargo-generate wasm-pack
