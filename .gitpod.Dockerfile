@@ -1,7 +1,7 @@
 FROM buildpack-deps:buster
 
 USER root
-RUN apt-get update && apt-get install -y  apt-utils git sudo curl nodejs
+RUN apt-get update && apt-get install -y  apt-utils git sudo curl nodejs npm
 
 ENV RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
