@@ -23,7 +23,8 @@ RUN set -eux; \
     chmod -R a+w $RUSTUP_HOME $CARGO_HOME; \
     rustup --version; \
     cargo --version; \
-    rustc --version;
+    rustc --version; \
+    cargo install cargo-generate wasm-pack
 
 USER root
 RUN apt-get update && apt-get install -y  apt-utils git sudo curl nodejs npm
