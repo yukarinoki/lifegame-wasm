@@ -1,9 +1,5 @@
 FROM buildpack-deps:buster
 
-USER root
-RUN apt-get update && apt-get install -y  apt-utils git sudo curl nodejs npm
-RUN npm install npm@latest -g
-
 ENV RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
     PATH=/usr/local/cargo/bin:$PATH \
@@ -28,3 +24,7 @@ RUN set -eux; \
     rustup --version; \
     cargo --version; \
     rustc --version;
+
+USER root
+RUN apt-get update && apt-get install -y  apt-utils git sudo curl nodejs npm
+RUN npm install npm@latest -g
