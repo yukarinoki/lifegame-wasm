@@ -3,4 +3,4 @@ image:
 
 tasks:
   - prebuild: cargo install cargo-generate wasm-pack
-    command: npm install npm@latest -g
+  
