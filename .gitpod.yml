@@ -3,4 +3,5 @@ image:
 
 tasks:
   - prebuild: cargo install cargo-generate wasm-pack
+  - init: export PATH="$PATH:/usr/local/cargo/bin"
   
