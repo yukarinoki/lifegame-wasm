@@ -78,10 +78,10 @@ impl Universe {
         (row * self.width + column) as usize
     }
 
-    pub live_neighbor_count (&self, row: u32, column: u32) -> u8 {
+    fn live_neighbor_count (&self, row: u32, column: u32) -> u8 {
         let mut count = 0;
-        for delta_row in [self.height-1, 0, 1] {
-            for delta_column in [self. width-1, 0, 1]{
+        for delta_row in [self.height-1, 0, 1].iter().cloned() {
+            for delta_column in [self. width-1, 0, 1].iter().cloned(){
                 if delta_column == 0 && delta_row == 0 {
                     continue;
                 }
@@ -90,7 +90,7 @@ impl Universe {
                 count += self.cells[self.get_index(neighbor_row, neighbor_column)] as u8;
             }
         }
-        count;
+        count
     }
 }
 
