@@ -2,5 +2,5 @@ image:
   file: .gitpod.Dockerfile
 
 tasks:
-  - init: export PATH="$PATH:/usr/local/cargo/bin"
+  - before: export PATH="$PATH:/usr/local/cargo/bin"
   
