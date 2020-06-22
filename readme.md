@@ -3,6 +3,8 @@ https://rustwasm.github.io/docs/book/
 
 
 ## How to build
+
+```
 git clone {this repository}  
 cd lifegame-wasm/wasm-game-of-life  
 wasm-pack build  
@@ -10,3 +12,4 @@ cd www
 npm install  
 npm run start  
 // connect to localhost:8080   
+```
