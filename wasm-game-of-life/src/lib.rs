@@ -136,13 +136,35 @@ impl Universe {
         self.cells[idx].toggle();
     }
     pub fn set_glider(&mut self, row: u32, column: u32) {
-        const glider: [Cell; 9] = [Cell::Dead, Cell::Alive, Cell::Dead, Cell::Dead, Cell::Dead, Cell::Alive, Cell::Alive, Cell::Alive, Cell::Alive];
-        for delta_row in [self.height-1, 0, 1].iter().cloned() {
-            for delta_column in [self.width-1, 0, 1].iter().cloned(){
+        // □□□□□
+        // □□■□□
+        // □□□■□
+        // □■■■□
+        // □□□□□
+        const GLIDER: [Cell; 9] = [Cell::Dead, Cell::Alive, Cell::Dead, Cell::Dead, Cell::Dead, Cell::Alive, Cell::Alive, Cell::Alive, Cell::Alive];
+        for delta_row in [0, 1, 2].iter().cloned() {
+            for delta_column in [0, 1, 2].iter().cloned(){
                 let neighbor_row = (row + delta_row) % self.height;
                 let neighbor_column = (column + delta_column) % self.width;
                 let idx = self.get_index(neighbor_row, neighbor_column);
-                self.cells[self.get_index(neighbor_row, neighbor_column)] = glider[(3 * delta_row + delta_column + 3) as usize];
+                self.cells[idx] = GLIDER[(3 * delta_row + delta_column) as usize];
+            }
+        }
+    }
+
+    pub fn set_pulser(&mut self, row: u32, column: u32){
+        // □□□□□□□
+        // □■□□□■□
+        // □■□■□■□
+        // □■□□□■□
+        // □□□□□□□
+        const PULSER: [Cell; 15] = [Cell::Alive, Cell::Dead, Cell::Dead, Cell::Dead,Cell::Alive,Cell::Alive, Cell::Dead, Cell::Alive, Cell::Dead,Cell::Alive,Cell::Alive, Cell::Dead, Cell::Dead, Cell::Dead,Cell::Alive];
+        for delta_row in [0, 1, 2].iter().cloned() {
+            for delta_column in [0, 1, 2, 3, 4].iter().cloned(){
+                let neighbor_row = (row + delta_row) % self.height;
+                let neighbor_column = (column + delta_column) % self.width;
+                let idx = self.get_index(neighbor_row, neighbor_column);
+                self.cells[idx] = PULSER[(5 * delta_row + delta_column) as usize];
             }
         }
     }
