@@ -16,3 +16,7 @@ npm install
 npm run start  
 // connect to localhost:8080   
 ```
+
+
+# Note
+In this gitpod image, headless chrome and firefox are not available, so when you test by wasm-pack, you do "wasm-pack test" without "--headless option" and open it by using your own blowser. 
