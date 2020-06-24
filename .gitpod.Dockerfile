@@ -29,3 +29,4 @@ RUN set -eux; \
 USER root
 RUN apt-get update && apt-get install -y  apt-utils git sudo curl nodejs npm
 RUN npm install npm@latest -g
+RUN npm i wasm-opt -g
