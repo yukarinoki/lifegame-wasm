@@ -15,11 +15,16 @@
             align-items: center;
             justify-content: center;
         }
+        #fps {
+            white-space: pre;
+            font-family: monospace;
+        }
     </style>
   </head>
   <body>
+    <div id ="fps"></div>
     <canvas id="game-of-life-canvas"></canvas>
-    <input type="range" id="timestepslide" name="volume" min="10" max="1000">
+    <input type="range" id="timestepslide" name="volume" min="2" max="1000">
     <label for="timestep">TimeStep 10-1000ms</label>
     <button id="play-pause"></button>
     <button id="initial-state">Init</button>
