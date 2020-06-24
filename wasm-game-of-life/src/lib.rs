@@ -1,5 +1,5 @@
 mod utils;
-
+use rand::prelude::*;
 use wasm_bindgen::prelude::*;
 use std::fmt;
 
@@ -9,12 +9,30 @@ use std::fmt;
 #[global_allocator]
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
+// A macro to provide `println!(..)`-style syntax for `console.log` logging.
+extern crate web_sys;
+macro_rules! log {
+    ( $( $t:tt )* ) => {
+        web_sys::console::log_1(&format!( $( $t )* ).into());
+    }
+}
+
 #[wasm_bindgen]
 #[repr(u8)]
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Cell {
     Dead = 0,
     Alive = 1,
+}
+
+
+impl Cell {
+    fn toggle(&mut self) {
+        *self = match *self {
+            Cell::Dead => Cell::Alive,
+            Cell::Alive => Cell::Dead,
+        };
+    }
 }
 
 #[wasm_bindgen]
@@ -27,6 +45,7 @@ pub struct Universe{
 #[wasm_bindgen]
 impl Universe {
     pub fn new() -> Universe {
+        utils::set_panic_hook();
         let width = 64;
         let height = 64;
 
@@ -110,6 +129,49 @@ impl Universe {
 
     pub fn cells(&self) -> *const Cell {
         self.cells.as_ptr()
+    }
+
+    pub fn toggle_cell(&mut self, row: u32, column: u32) {
+        let idx = self.get_index(row, column);
+        self.cells[idx].toggle();
+    }
+    pub fn set_glider(&mut self, row: u32, column: u32) {
+        const glider: [Cell; 9] = [Cell::Dead, Cell::Alive, Cell::Dead, Cell::Dead, Cell::Dead, Cell::Alive, Cell::Alive, Cell::Alive, Cell::Alive];
+        for delta_row in [self.height-1, 0, 1].iter().cloned() {
+            for delta_column in [self.width-1, 0, 1].iter().cloned(){
+                let neighbor_row = (row + delta_row) % self.height;
+                let neighbor_column = (column + delta_column) % self.width;
+                let idx = self.get_index(neighbor_row, neighbor_column);
+                self.cells[self.get_index(neighbor_row, neighbor_column)] = glider[(3 * delta_row + delta_column + 3) as usize];
+            }
+        }
+    }
+
+    pub fn set_random_cells(&mut self){
+        self.cells = (0..self.width * self.height)
+                    .map(|i| {
+                        if random() {
+                            Cell::Alive
+                        } else {
+                            Cell::Dead
+                        }
+                    })
+                    .collect();
+    }
+    pub fn set_initial_cells(&mut self){
+        self.cells = (0..self.width * self.height)
+                    .map(|i| {
+                        if i % 2 == 0 || i % 7 == 0 {
+                            Cell::Alive
+                        } else {
+                            Cell::Dead
+                        }
+                    })
+                    .collect();
+    }
+
+    pub fn set_all_dead_cells(&mut self){
+        self.cells = (0..self.width * self.height).map(|_i| Cell::Dead).collect();
     }
 }
 

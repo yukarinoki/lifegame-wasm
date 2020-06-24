@@ -19,6 +19,12 @@
   </head>
   <body>
     <canvas id="game-of-life-canvas"></canvas>
-    <script src='./bootstrap.js'></script>
+    <input type="range" id="timestepslide" name="volume" min="10" max="1000">
+    <label for="timestep">TimeStep 10-1000ms</label>
+    <button id="play-pause"></button>
+    <button id="initial-state">Init</button>
+    <button id="random-state">Random</button>
+    <button id="clear-state">Clear</button>
+    <script src='./bootstrap.js'></script> 
   </body>
 </html>

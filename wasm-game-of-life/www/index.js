@@ -17,15 +17,47 @@ canvas.height = (CELL_SIZE + 1) * height + 1;
 canvas.width = (CELL_SIZE + 1) * width + 1;
 
 const ctx = canvas.getContext('2d');
-
-const renderLoop = () => {
-  universe.tick();
+let animationId = null;
+let timestep = 500;
+let lastcalltime = null;
+const renderLoop = (call_time) => {
+  debugger;
+  if(!lastcalltime) lastcalltime = call_time;
+  let progress = call_time - lastcalltime;
+  if(progress > timestep){
+    universe.tick();
+    lastcalltime = call_time;
+  }
 
   drawGrid();
   drawCells();
 
-  requestAnimationFrame(renderLoop);
+  animationId = requestAnimationFrame(renderLoop);
 };
+
+const isPaused = () => {
+  return animationId === null;
+};
+
+const playPauseButton = document.getElementById("play-pause")
+const play = () => {
+    playPauseButton.textContent = "⏸";
+    renderLoop();
+}
+
+const pause = () => {
+    playPauseButton.textContent = "▶";
+    cancelAnimationFrame(animationId);
+    animationId = null;
+}
+
+playPauseButton.addEventListener("click", event => {
+    if (isPaused()){
+        play();
+    }else{
+        pause();
+    }
+})
 
 const drawGrid = () => {
   ctx.beginPath();
@@ -75,5 +107,52 @@ const drawCells = () => {
   ctx.stroke();
 };
 
+canvas.addEventListener("click", event => {
+  const boundingRect = canvas.getBoundingClientRect();
 
-requestAnimationFrame(renderLoop)
+  const scaleX = canvas.width / boundingRect.width;
+  const scaleY = canvas.height / boundingRect.height;
+
+  const canvasLeft = (event.clientX - boundingRect.left) * scaleX;
+  const canvasTop = (event.clientY - boundingRect.top) * scaleY;
+
+  const row = Math.min(Math.floor(canvasTop / (CELL_SIZE + 1)), height - 1);
+  const col = Math.min(Math.floor(canvasLeft / (CELL_SIZE + 1)), width - 1);
+
+  universe.toggle_cell(row, col);
+
+  drawGrid();
+  drawCells();
+});
+
+const initButton = document.getElementById('initial-state');
+const randomButoon = document.getElementById('random-state');
+const clearButton = document.getElementById('clear-state');
+
+initButton.addEventListener("click", event =>{
+    universe.set_initial_cells();
+    drawGrid();
+    drawCells();
+})
+
+randomButoon.addEventListener("click", event =>{
+    universe.set_random_cells();
+    drawGrid();
+    drawCells();
+})
+
+clearButton.addEventListener("click", event =>{
+    universe.set_all_dead_cells();
+    drawGrid();
+    drawCells();
+})
+
+const timestepSlide = document.getElementById('timestepslide');
+
+timestepSlide.addEventListener("change", event => {
+    console.log(timestepSlide.valueAsNumber);
+    timestep = timestepSlide.valueAsNumber;
+})
+
+
+play();
