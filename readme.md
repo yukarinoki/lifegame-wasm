@@ -19,6 +19,10 @@ npm run start
 
 
 # Note
+<<<<<<< HEAD
 In this gitpod image, headless chrome and firefox are not available, so when you test by wasm-pack, you do "wasm-pack test" without "--headless option" and open it by using your own blowser.   
   
+=======
+In this gitpod image, headless chrome and firefox are not available, so when you test by wasm-pack, you do "wasm-pack test" without "--headless option" and open it by using your own blowser. 
+>>>>>>> 5d9e2b00b07cffb429d1f0a45b52abb848f28904
 ![test_result](https://github.com/yukarinoki/lifegame-wasm/blob/master/image.png)
